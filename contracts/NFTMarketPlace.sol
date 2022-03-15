@@ -68,16 +68,17 @@ contract NFTMarketPlace is ReentrancyGuard {
         itemId.increment();
         uint256 id = itemId.current();
 
-        idForMarketItem[id] = NftMerketItem(
-            nftContract,
-            id,
-            tokenId,
-            payable(address(0)),
-            payable(msg.sender),
-            price,
-            false,
-            address(0),
-            0
+        idForMarketItem[id] = NftMerketItem({
+            nftContract: nftContract,
+            id: id,
+            tokenId: tokenId,
+            owner: payable(address(0)),
+            seller: payable(msg.sender), // this is for seller address, should be seller: payable(msg.sender)
+            price: price,
+            sold: false,
+            paymentTokenAddress: address(0),
+            marketingFeeTokenAmount: 0
+        }
         );
 
         IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
@@ -117,18 +118,19 @@ contract NFTMarketPlace is ReentrancyGuard {
 
         uint256 marketingFeeTokenAmount = IERC20(paymentTokenAddress).balanceOf(address(this)) - currentTokenBalance;
 
-        idForMarketItem[id] = NftMerketItem(
-            nftContract,
-            id,
-            tokenId,
-            payable(address(0)),
-            payable(msg.sender),
-            price,
-            false,
-            paymentTokenAddress,
-            marketingFeeTokenAmount
+        idForMarketItem[id] = NftMerketItem({
+            nftContract: nftContract,
+            id: id,
+            tokenId: tokenId,
+            owner: payable(address(0)),
+            seller: payable(msg.sender), // this is for seller address, should be seller: payable(msg.sender)
+            price: price,
+            sold: false,
+            paymentTokenAddress: paymentTokenAddress,
+            marketingFeeTokenAmount: marketingFeeTokenAmount
+        }
         );
-
+        
         emit NftMerketItemCreated(
             nftContract,
             id,

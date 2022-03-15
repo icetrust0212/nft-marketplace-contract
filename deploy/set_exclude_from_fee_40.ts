@@ -15,10 +15,9 @@ const fn: DeployFunction = async function ({ deployments: { deploy, get, execute
 
 };
 fn.skip = async (hre) => {
-  return false;
   // Skip this on kovan.
   const chain = parseInt(await hre.getChainId());
-  return chain != 1;
+  return chain == 1 || chain == 56;
 };
 fn.dependencies = ['ASIX_TOKEN', 'Marketplace'];
 

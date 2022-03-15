@@ -12,7 +12,6 @@ const fn: DeployFunction = async function ({ deployments: { deploy }, ethers: { 
 
 };
 fn.skip = async (hre) => {
-  return false
   // Skip this on kovan.
   const chain = parseInt(await hre.getChainId());
   return chain == 1 || chain == 56;

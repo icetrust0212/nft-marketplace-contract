@@ -131,8 +131,8 @@ describe("NFT marketplace Test", function () {
     //approve 
     let transferTx = await tokenContract.transfer(buyer.address, 2 * price);
     await transferTx.wait();
-    tokenContract.connect(buyer).approve(marketplaceContract.address, price)
-    
+    let approveBuyTx = await  tokenContract.connect(buyer).approve(marketplaceContract.address, price)
+    await approveBuyTx.wait();
     //buy
     let buyTx = await marketplaceContract.connect(buyer).createMarketForSaleWithToken(nftContract.address, 4);
     await buyTx.wait();
